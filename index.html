@@ -49,9 +49,17 @@ button,select{font-family:inherit}
 .note button{margin-left:auto;border:0;background:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1}
 
 /* KPIs */
-.kpis{margin-top:18px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.kpis{margin-top:18px;display:grid;grid-template-columns:1.15fr repeat(4,minmax(0,1fr));gap:16px}
 .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
 .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.kpi.hero{background:linear-gradient(135deg,#0B2545 0%,#134074 55%,#0E9AA7 130%);border-color:transparent;color:#fff;box-shadow:0 6px 20px rgba(11,37,69,.28)}
+.kpi.hero::before{display:none}
+.kpi.hero .lbl{color:rgba(255,255,255,.85)}
+.kpi.hero .ic{background:rgba(255,255,255,.16);color:#fff}
+.kpi.hero .num{font-size:46px}
+.kpi.hero .sub{color:rgba(255,255,255,.8)}
+.kpi.hero .stack{display:flex;gap:3px;height:6px;margin-top:12px}
+.kpi.hero .stack i{display:block;border-radius:3px;background:rgba(255,255,255,var(--a))}
 .kpi .top{display:flex;align-items:center;justify-content:space-between}
 .kpi .lbl{font-size:13px;font-weight:700;color:var(--muted)}
 .kpi .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--c)}
@@ -90,7 +98,7 @@ button,select{font-family:inherit}
 .slh .sw{width:10px;height:10px;border-radius:3px}
 .slh .hint{margin-left:auto;font-size:11.5px;color:var(--muted)}
 .srows{max-height:232px;overflow-y:auto}
-.srow{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;padding:8px 6px;border:0;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;border-radius:6px}
+.srow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;padding:8px 6px;border:0;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;border-radius:6px}
 .srow:last-child{border-bottom:0}
 .srow:hover{background:var(--soft)}
 .srow .nm{font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -104,7 +112,7 @@ button,select{font-family:inherit}
 
 /* Key projects */
 .plist{display:flex;flex-direction:column}
-.phead,.proj{display:grid;grid-template-columns:44px minmax(0,1fr) 112px 108px;gap:10px;align-items:center}
+.phead,.proj{display:grid;grid-template-columns:minmax(0,1fr) 120px 108px;gap:10px;align-items:center}
 .phead{font-size:11.5px;color:var(--muted);font-weight:700;padding:0 10px 8px;border-bottom:1px solid var(--line)}
 .proj{padding:10px;border-bottom:1px solid var(--line);cursor:pointer;border-radius:8px;background:none;border-left:0;border-right:0;border-top:0;text-align:left;color:inherit;font-size:13px;width:100%}
 .proj:hover{background:var(--soft)}
@@ -114,11 +122,6 @@ button,select{font-family:inherit}
 .late{display:block;font-size:11px;font-weight:700;color:var(--red)}
 .soon{display:block;font-size:11px;font-weight:700;color:var(--teal)}
 .ch .meta.warn{color:var(--red);font-weight:700}
-.pri{display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;border-radius:6px;padding:3px 0;width:34px}
-.pri.P1{background:var(--navy);color:#fff}
-.pri.P2{background:color-mix(in srgb,var(--mid) 18%,var(--card));color:var(--mid)}
-.pri.P3{background:var(--soft);color:var(--muted)}
-.pri.done{background:color-mix(in srgb,var(--green) 14%,var(--card));color:var(--green)}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
 
 /* Blockers */
@@ -130,7 +133,7 @@ button,select{font-family:inherit}
 .stat .k small{display:block;font-weight:500;font-size:11.5px}
 .sevkey{margin-left:auto;display:flex;gap:14px;align-items:center;font-size:12px;color:var(--muted)}
 .tblw{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:680px}
 th{text-align:left;font-size:11.5px;color:var(--muted);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line)}
 td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 tr:last-child td{border-bottom:0}
@@ -202,8 +205,8 @@ td.ag{white-space:nowrap;font-variant-numeric:tabular-nums}
 
 footer{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center}
 
-@media (max-width:1200px){.row3{grid-template-columns:1fr 1fr}.row3 .kp{grid-column:1/-1}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:760px){.wrap{padding:16px}.row3{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.updated{margin-left:0}.phead,.proj{grid-template-columns:40px minmax(0,1fr) 84px}.phead .c4,.proj .dt{display:none}.sevkey{margin-left:0}}
+@media (max-width:1200px){.row3{grid-template-columns:1fr 1fr}.row3 .kp{grid-column:1/-1}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){.wrap{padding:16px}.row3{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.updated{margin-left:0}.phead,.proj{grid-template-columns:minmax(0,1fr) 96px}.phead .c4,.proj .dt{display:none}.sevkey{margin-left:0}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -249,7 +252,7 @@ footer{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center}
     <div class="card kp">
       <div class="ch"><h2>Key Projects</h2><span class="meta" id="projMeta"></span><button class="link" id="projAll" type="button">View all</button></div>
       <div class="plist">
-        <div class="phead"><span>Priority</span><span>Project</span><span>Current phase</span><span class="c4">Target date</span></div>
+        <div class="phead"><span>Project</span><span>Current phase</span><span class="c4">Target date</span></div>
         <div id="projects"></div>
       </div>
     </div>
@@ -259,7 +262,6 @@ footer{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center}
     <div class="ch"><h2>Key Blockers</h2><button class="link" id="blkAll" type="button">View all</button></div>
     <div class="bsum">
       <div class="stat"><div class="v" id="bOpen">—</div><div class="k">Open blockers</div></div>
-      <div class="stat"><div class="v" id="bOld">—</div><div class="k">Open more than 7 days<small id="bOldNote"></small></div></div>
       <div class="sevkey">
         <span><i class="dot" style="background:var(--navy)"></i>High</span>
         <span><i class="dot" style="background:var(--mid)"></i>Medium</span>
@@ -268,7 +270,7 @@ footer{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center}
     </div>
     <div class="tblw">
       <table>
-        <thead><tr><th>Severity</th><th>Project</th><th>Blocker</th><th>Delivery impact</th><th>Aging</th></tr></thead>
+        <thead><tr><th>Severity</th><th>Project</th><th>Blocker</th><th>Delivery impact</th></tr></thead>
         <tbody id="blockers"></tbody>
       </table>
     </div>
@@ -302,21 +304,21 @@ footer{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center}
 const DATA_AS_OF = "2026-11-23";
 
 const PROJECTS = [
-  {"project": "Bectran - GMS", "ba": "Armando", "verticals": ["Other"], "priority": "P1", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Development on track; no open risks", "originalDate": "", "targetDate": "2026-12-08", "targetLabel": "", "targetNote": "", "topRisk": "", "nextStep": "Deliver GMS development and integration; start UAT", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "TransformerHub", "ba": "Armando", "verticals": ["SRS", "HLSG"], "priority": "P2", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Development started; onboarding new team members and defining the model with client lead", "originalDate": "", "targetDate": "2026-12-31", "targetLabel": "Dec 2026", "targetNote": "Tracker shows \"Dec-26\"; read as December 2026", "topRisk": "", "nextStep": "Onboard new team members and agree on the model to start work", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "Bectran - EIL (Mingledorff)", "ba": "Armando", "verticals": ["Other"], "priority": "P3", "status": "Active", "phase": "Discovery", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Requirements set-up underway", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Set up requirements and EIL onboarding", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "Aquafinity", "ba": "Armando", "verticals": ["Other"], "priority": "P1", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "At Risk", "rag": "Amber", "driver": "Field mapping incomplete; vendor test data pending", "originalDate": "", "targetDate": "2026-12-11", "targetLabel": "", "targetNote": "", "topRisk": "Field mapping still incomplete on the Agility side; test data pending from vendor", "nextStep": "Build roadmap and timeline; assess endpoint requirement readiness and map blockers", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "Sailpoint", "ba": "Armando", "verticals": ["Other"], "priority": "P2", "status": "Active", "phase": "Discovery", "businessImpact": "", "confidence": "At Risk", "rag": "Amber", "driver": "Slow stakeholder responses on requirements", "originalDate": "", "targetDate": "2026-12-08", "targetLabel": "", "targetNote": "", "topRisk": "Slow responses from stakeholders", "nextStep": "Define requirements and have an action plan ready by Nov 24", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "Esker Phase 2", "ba": "Giaco", "verticals": ["SRS", "HLSG"], "priority": "P2", "status": "Active", "phase": "Discovery", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Discovery and internal refinement ongoing", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Follow up on vendor technical review (11/12); write canonical-structure requirements requested by client lead", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "HLSG - Order Now", "ba": "Giaco", "verticals": ["HLSG"], "priority": "P1", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Development in progress", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "Tracker notes a staging (STG) date of 11/13/2026", "topRisk": "", "nextStep": "Obtain webhook URL and auth details from stakeholders", "lastUpdated": "2026-11-23", "inferred": ["priority", "status"]},
-  {"project": "HLSG - Quote Enhancement", "ba": "Giaco", "verticals": ["HLSG"], "priority": "P3", "status": "Active", "phase": "Refinement", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Awaiting stakeholder requirements form", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Receive requirements form from stakeholders", "lastUpdated": "2026-11-23", "inferred": ["priority", "status"]},
-  {"project": "PMI - New Requirements", "ba": "Giaco", "verticals": ["SRS"], "priority": "P1", "status": "In Progress", "phase": "Ready to Deploy", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Both requirements delivered; awaiting UAT sign-off", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Obtain UAT sign-off (follow-ups sent 10/13, 10/20, 10/29)", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "RH - Quotes", "ba": "Giaco", "verticals": ["SRS"], "priority": "P1", "status": "In Progress", "phase": "UAT", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "In UAT", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Obtain UAT sign-off from stakeholders", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "Agility Kafka", "ba": "Saimon", "verticals": ["HLSG"], "priority": "P2", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Data mapping nearly complete; vendor documentation received", "originalDate": "", "targetDate": "2027-01-27", "targetLabel": "", "targetNote": "Go-live target; tracker says \"Live by Jan 27\", year assumed 2027", "topRisk": "", "nextStep": "Finish data mapping using vendor documentation", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "Agility ShipmentsList & InvoicesList Migration", "ba": "Saimon", "verticals": ["HLSG"], "priority": "P1", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Second round of consumer-requested changes in progress since 11/13", "originalDate": "", "targetDate": "2026-12-08", "targetLabel": "", "targetNote": "", "topRisk": "Consumers asked that the new response format match the current one", "nextStep": "Finish second round of changes on both stored procedures", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "FrederickBlock", "ba": "Saimon", "verticals": ["SRS", "HLSG"], "priority": "P2", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Fix deployed; security re-scan still pending", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Keep following up with the Cyber team to re-scan the correct target", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "Marketing Items", "ba": "Saimon", "verticals": ["HLSG"], "priority": "P3", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Ongoing daily marketing requests", "originalDate": "", "targetDate": "", "targetLabel": "Ongoing", "targetNote": "Continuous request intake", "topRisk": "", "nextStep": "Continue daily request intake", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
-  {"project": "HLSG - CC Tax Code", "ba": "Saimon", "verticals": ["HLSG"], "priority": "P2", "status": "In Progress", "phase": "UAT", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Business asked to deploy in early January, when it is needed", "originalDate": "", "targetDate": "2027-01-10", "targetLabel": "Early Jan 2027", "targetNote": "Business-requested deployment window; exact date not set", "topRisk": "", "nextStep": "Deploy in early January, per business request", "lastUpdated": "2026-11-23", "inferred": ["priority", "status"]}
+  {"project": "Bectran - GMS", "ba": "Armando", "verticals": ["Other"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Development on track; no open risks", "originalDate": "", "targetDate": "2026-12-08", "targetLabel": "", "targetNote": "", "topRisk": "", "nextStep": "Deliver GMS development and integration; start UAT", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "TransformerHub", "ba": "Armando", "verticals": ["SRS", "HLSG"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Development started; onboarding new team members and defining the model with client lead", "originalDate": "", "targetDate": "2026-12-31", "targetLabel": "Dec 2026", "targetNote": "Tracker shows \"Dec-26\"; read as December 2026", "topRisk": "", "nextStep": "Onboard new team members and agree on the model to start work", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "Bectran - EIL (Mingledorff)", "ba": "Armando", "verticals": ["Other"], "status": "Discovery", "phase": "Discovery", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Requirements set-up underway", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Set up requirements and EIL onboarding", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "Aquafinity", "ba": "Armando", "verticals": ["Other"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "At Risk", "rag": "Amber", "driver": "Field mapping incomplete; vendor test data pending", "originalDate": "", "targetDate": "2026-12-11", "targetLabel": "", "targetNote": "", "topRisk": "Field mapping still incomplete on the Agility side; test data pending from vendor", "nextStep": "Build roadmap and timeline; assess endpoint requirement readiness and map blockers", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "Sailpoint", "ba": "Armando", "verticals": ["Other"], "status": "Discovery", "phase": "Discovery", "businessImpact": "", "confidence": "At Risk", "rag": "Amber", "driver": "Slow stakeholder responses on requirements", "originalDate": "", "targetDate": "2026-12-08", "targetLabel": "", "targetNote": "", "topRisk": "Slow responses from stakeholders", "nextStep": "Define requirements and have an action plan ready by Nov 24", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "Esker Phase 2", "ba": "Giaco", "verticals": ["SRS", "HLSG"], "status": "Discovery", "phase": "Discovery", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Discovery and internal refinement ongoing", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Follow up on vendor technical review (11/12); write canonical-structure requirements requested by client lead", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "HLSG - Order Now", "ba": "Giaco", "verticals": ["HLSG"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Development in progress", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "Tracker notes a staging (STG) date of 11/13/2026", "topRisk": "", "nextStep": "Obtain webhook URL and auth details from stakeholders", "lastUpdated": "2026-11-23", "inferred": []},
+  {"project": "HLSG - Quote Enhancement", "ba": "Giaco", "verticals": ["HLSG"], "status": "Discovery", "phase": "Refinement", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Awaiting stakeholder requirements form", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Receive requirements form from stakeholders", "lastUpdated": "2026-11-23", "inferred": []},
+  {"project": "PMI - New Requirements", "ba": "Giaco", "verticals": ["SRS"], "status": "Ready to Deploy", "phase": "Ready to Deploy", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Both requirements delivered; awaiting UAT sign-off", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Obtain UAT sign-off (follow-ups sent 10/13, 10/20, 10/29)", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "RH - Quotes", "ba": "Giaco", "verticals": ["SRS"], "status": "UAT", "phase": "UAT", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "In UAT", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Obtain UAT sign-off from stakeholders", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "Agility Kafka", "ba": "Saimon", "verticals": ["HLSG"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Data mapping nearly complete; vendor documentation received", "originalDate": "", "targetDate": "2027-01-27", "targetLabel": "", "targetNote": "Go-live target; tracker says \"Live by Jan 27\", year assumed 2027", "topRisk": "", "nextStep": "Finish data mapping using vendor documentation", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "Agility ShipmentsList & InvoicesList Migration", "ba": "Saimon", "verticals": ["HLSG"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Second round of consumer-requested changes in progress since 11/13", "originalDate": "", "targetDate": "2026-12-08", "targetLabel": "", "targetNote": "", "topRisk": "Consumers asked that the new response format match the current one", "nextStep": "Finish second round of changes on both stored procedures", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "FrederickBlock", "ba": "Saimon", "verticals": ["SRS", "HLSG"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Fix deployed; security re-scan still pending", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Keep following up with the Cyber team to re-scan the correct target", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "Marketing Items", "ba": "Saimon", "verticals": ["HLSG"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Ongoing daily marketing requests", "originalDate": "", "targetDate": "", "targetLabel": "Ongoing", "targetNote": "Continuous request intake", "topRisk": "", "nextStep": "Continue daily request intake", "lastUpdated": "2026-11-23", "inferred": ["vertical"]},
+  {"project": "HLSG - CC Tax Code", "ba": "Saimon", "verticals": ["HLSG"], "status": "UAT", "phase": "UAT", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Business asked to deploy in early January, when it is needed", "originalDate": "", "targetDate": "2027-01-10", "targetLabel": "Early Jan 2027", "targetNote": "Business-requested deployment window; exact date not set", "topRisk": "", "nextStep": "Deploy in early January, per business request", "lastUpdated": "2026-11-23", "inferred": []}
 ];
 
 // agingDays: null when the tracker has no open date.
@@ -332,15 +334,15 @@ const BLOCKERS = [
 ];
 
 /* ===================================================================== */
-const STATUSES = ["Active","In Progress","Paused"];
+const STATUSES = ["Discovery","In Progress","UAT","Ready to Deploy"];
+const KPI_STATUSES = STATUSES;
 const CONFS = ["On Track","At Risk","Critical"];
-const STATUS_COLOR = {"Active":"var(--mid)","In Progress":"var(--teal)","Paused":"var(--light)","Completed":"var(--dark)"};
+const STATUS_COLOR = {"Discovery":"var(--light)","In Progress":"var(--mid)","UAT":"var(--teal)","Ready to Deploy":"var(--dark)","Paused":"var(--light)","Completed":"var(--dark)"};
 const CONF_COLOR = {"On Track":"var(--green)","At Risk":"var(--turq)","Critical":"var(--red)"};
 const SEV_COLOR = {High:"var(--navy)",Medium:"var(--mid)",Low:"var(--light)"};
 const SEV_RANK = {High:0,Medium:1,Low:2};
-const PRI_RANK = {P1:0,P2:1,P3:2};
 const PHASE_RANK = {"Ready to Deploy":0,"UAT":1,"Development":2,"Refinement":3,"Discovery":4};
-const FIELD_LABEL = {vertical:"Vertical",priority:"Priority",status:"Status"};
+const FIELD_LABEL = {vertical:"Vertical",status:"Status"};
 
 const FILTERS = {
   ba:{el:"fBA", all:"All", opts:[...new Set(PROJECTS.map(p=>p.ba))].sort((a,b)=>(a==="Unassigned")-(b==="Unassigned")||a.localeCompare(b))},
@@ -379,22 +381,24 @@ $("reset").addEventListener("click", () => {
 /* ---------- KPIs ---------- */
 const ICONS = {
   total:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
-  "Active":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>',
+  "Discovery":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>',
   "In Progress":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>',
+  "UAT":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 12l2 2 4-4"/></svg>',
+  "Ready to Deploy":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>',
   "Paused":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/></svg>',
   "Completed":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>'
 };
-const STATUS_SUB = {"Active":"In discovery or refinement","In Progress":"In build, UAT or deploy","Paused":"On hold","Completed":"Delivered"};
+const STATUS_SUB = {"Discovery":"Discovery or refinement","In Progress":"In development","UAT":"User acceptance testing","Ready to Deploy":"Awaiting release","Paused":"On hold","Completed":"Delivered"};
 function renderKpis(rows){
   const t = rows.length;
-  const cards = [{key:"total",label:"Total Projects",n:t,c:"var(--navy)",sub:"No prior-month snapshot yet",bar:null}]
-    .concat(STATUSES.map(s => { const n=rows.filter(p=>p.status===s).length; return {key:s,label:s,n,c:STATUS_COLOR[s],sub:`<b>${pct(n,t)}%</b> of portfolio · ${STATUS_SUB[s]}`,bar:pct(n,t)}; }));
+  const cards = [{key:"total",label:"Total Projects",n:t,c:"var(--navy)",sub:"",bar:null}]
+    .concat(KPI_STATUSES.map(s => { const n=rows.filter(p=>p.status===s).length; return {key:s,label:s,n,c:STATUS_COLOR[s],sub:`<b>${pct(n,t)}%</b> of portfolio · ${STATUS_SUB[s]}`,bar:pct(n,t)}; }));
   $("kpis").innerHTML = cards.map(k => `
-    <div class="kpi" style="--c:${k.c}">
+    <div class="kpi${k.key==="total"?" hero":""}" style="--c:${k.c}">
       <div class="top"><span class="lbl">${esc(k.label)}</span><span class="ic">${ICONS[k.key]}</span></div>
       <div class="num">${k.n}</div>
-      <div class="sub">${k.sub}</div>
-      ${k.bar===null ? `<div class="bar" aria-hidden="true"><i style="width:${t?100:0}%"></i></div>` : `<div class="bar" aria-hidden="true"><i style="width:${k.bar}%"></i></div>`}
+      ${k.sub?`<div class="sub">${k.sub}</div>`:""}
+      ${k.bar===null ? `<div class="sub">Across ${STATUSES.length} stages</div><div class="stack" aria-hidden="true">${STATUSES.map((st,i)=>{const n=rows.filter(p=>p.status===st).length; return n?`<i style="flex:${n};--a:${(0.95-i*0.2).toFixed(2)}" title="${st}: ${n}"></i>`:"";}).join("")}</div>` : `<div class="bar" aria-hidden="true"><i style="width:${k.bar}%"></i></div>`}
     </div>`).join("");
 }
 
@@ -440,7 +444,6 @@ function donut(wrapId, legendId, items, total, centerBig, centerSmall, label, li
     $(listId).innerHTML = `<div class="slh"><span class="sw" style="background:${it.color}"></span><b>${esc(it.name)}</b><span style="color:var(--muted)">${it.n} project${it.n===1?"":"s"}</span><span class="hint">Select a segment to switch</span></div>
       <div class="srows">${sortProjects(it.list).map(p => `
         <button type="button" class="srow" data-p="${esc(p.project)}">
-          <span><span class="pri ${p.priority}">${p.priority}</span></span>
           <span style="min-width:0"><div class="nm">${esc(p.project)}</div><div class="own">${esc(p.ba)} · ${esc(p.phase)}</div></span>
           <span class="dt">${esc(targetText(p))}${targetFlag(p)}</span>
         </button>`).join("")}</div>`;
@@ -467,7 +470,8 @@ function targetFlag(p){
 
 /* ---------- Key projects ---------- */
 function sortProjects(rows){
-  return [...rows].sort((a,b) => PRI_RANK[a.priority]-PRI_RANK[b.priority] || (PHASE_RANK[a.phase]??9)-(PHASE_RANK[b.phase]??9) || a.project.localeCompare(b.project));
+  // Furthest-along stage first, then earliest target date (TBD last), then name
+  return [...rows].sort((a,b) => (PHASE_RANK[a.phase]??9)-(PHASE_RANK[b.phase]??9) || (a.targetDate||"9999").localeCompare(b.targetDate||"9999") || a.project.localeCompare(b.project));
 }
 function renderProjects(rows){
   const open = rows.filter(p=>p.status!=="Completed");
@@ -481,7 +485,6 @@ function renderProjects(rows){
   if(!rows.length){ $("projects").innerHTML = `<div class="empty">No projects match these filters.</div>`; return; }
   $("projects").innerHTML = show.map(p => `
     <button class="proj" type="button" data-p="${esc(p.project)}">
-      <span>${p.priority ? `<span class="pri ${p.priority}">${p.priority}</span>` : `<span class="pri done" title="Completed">✓</span>`}</span>
       <span style="min-width:0"><div class="nm">${esc(p.project)}</div><div class="own">${esc(p.ba)} · ${esc(vText(p))}</div></span>
       <span class="ph"><i class="dot" style="background:${CONF_COLOR[p.confidence]||STATUS_COLOR[p.status]}"></i>${esc(p.phase)}</span>
       <span class="dt">${esc(targetText(p))}${targetFlag(p)}</span>
@@ -492,13 +495,11 @@ function renderProjects(rows){
 /* ---------- Blockers ---------- */
 function renderBlockers(rows){
   const names = new Set(rows.map(p=>p.project));
-  const pri = Object.fromEntries(PROJECTS.map(p=>[p.project,p.priority]));
+  const ph = Object.fromEntries(PROJECTS.map(p=>[p.project,PHASE_RANK[p.phase]??9]));
   const list = BLOCKERS.filter(b=>names.has(b.project))
-    .sort((a,b) => SEV_RANK[a.severity]-SEV_RANK[b.severity] || (b.agingDays??-1)-(a.agingDays??-1) || PRI_RANK[pri[a.project]]-PRI_RANK[pri[b.project]]);
+    .sort((a,b) => SEV_RANK[a.severity]-SEV_RANK[b.severity] || (b.agingDays??-1)-(a.agingDays??-1) || ph[a.project]-ph[b.project]);
   const known = list.filter(b=>b.agingDays!=null).length;
   $("bOpen").textContent = list.length;
-  $("bOld").textContent = list.filter(b=>b.agingDays>7).length;
-  $("bOldNote").textContent = list.length ? `Aging tracked for ${known} of ${list.length}` : "";
   const show = state.allBlockers ? list : list.slice(0,5);
   $("blkAll").textContent = state.allBlockers ? "Show fewer" : `View all (${list.length})`;
   $("blkAll").hidden = list.length <= 5;
@@ -508,8 +509,7 @@ function renderBlockers(rows){
       <td class="pn">${esc(b.project)}</td>
       <td>${esc(b.description)}</td>
       <td>${esc(b.impact)}</td>
-      <td class="ag">${b.agingDays==null ? '<span class="age na">Not tracked</span>' : `<span class="age ${b.agingDays>7?"old":""}">${b.agingDays} days</span>`}</td>
-    </tr>`).join("") : `<tr><td colspan="5"><div class="empty">No open blockers for these filters.</div></td></tr>`;
+    </tr>`).join("") : `<tr><td colspan="4"><div class="empty">No open blockers for these filters.</div></td></tr>`;
 }
 
 /* ---------- Project detail ---------- */
@@ -521,7 +521,6 @@ function openProject(name){
   $("modal").innerHTML = `
     <div class="mh"><div><h3 id="mTitle">${esc(p.project)}</h3><div style="color:var(--muted);font-size:13px;margin-top:2px">Owned by ${esc(p.ba)}</div></div><button class="x" id="mx" type="button" aria-label="Close">×</button></div>
     <div class="chips">
-      ${p.priority ? `<span class="chip"><span class="pri ${p.priority}" style="width:auto;padding:0 6px;margin-right:4px">${p.priority}</span>Priority${inf("priority")}</span>` : ""}
       <span class="chip"><i class="dot" style="background:${STATUS_COLOR[p.status]}"></i>${esc(p.status)}${inf("status")}</span>
       ${p.confidence ? `<span class="chip"><i class="dot" style="background:${CONF_COLOR[p.confidence]}"></i>${esc(p.confidence)} (RAG ${esc(p.rag)})</span>` : ""}
       <span class="chip">${esc(vText(p))}${inf("vertical")}</span>
@@ -558,7 +557,7 @@ function renderTimeline(rows){
   const open = rows.filter(p=>p.status!=="Completed");
   $("tlDone").textContent = incDone && state.status!=="Completed" ? "Hide completed" : `Show completed (${done.length})`;
   $("tlDone").hidden = !done.length || state.status==="Completed";
-  const dated = open.filter(p=>p.targetDate).sort((a,b)=>a.targetDate.localeCompare(b.targetDate) || PRI_RANK[a.priority]-PRI_RANK[b.priority]);
+  const dated = open.filter(p=>p.targetDate).sort((a,b)=>a.targetDate.localeCompare(b.targetDate) || (PHASE_RANK[a.phase]??9)-(PHASE_RANK[b.phase]??9));
   const undated = sortProjects(open.filter(p=>!p.targetDate));
   const doneRows = incDone ? [...done].sort((a,b)=>b.targetDate.localeCompare(a.targetDate)) : [];
   const late = dated.filter(p=>daysPast(p)>0).length;
@@ -599,7 +598,7 @@ function renderTimeline(rows){
       <span class="lab" style="${labPos};color:${lateBy>0?"var(--red)":"var(--text)"}">${label}</span>`;
   };
   const row = p => `<div class="tr body" data-p="${esc(p.project)}" tabindex="0" role="button" aria-label="${esc(p.project)}, ${esc(p.phase)}, target ${esc(targetText(p))}">
-      <div class="tc"><div class="nm">${p.priority?`<span class="pri ${p.priority}" style="margin-right:6px">${p.priority}</span>`:""}${esc(p.project)}</div><div class="own">${esc(p.ba)} · ${esc(vText(p))}</div></div>
+      <div class="tc"><div class="nm">${esc(p.project)}</div><div class="own">${esc(p.ba)} · ${esc(vText(p))}</div></div>
       <div class="tc">${stageCell(p)}</div>
       <div class="tt">${timeCell(p)}</div></div>`;
   const axis = months.filter(m=>(m-lo)/(hi-lo) < 0.93).map(m=>`<span style="left:${X(m)}">${new Date(m).toLocaleDateString("en-US",{month:"short",year:"numeric",timeZone:"UTC"})}</span>`).join("")
@@ -634,4 +633,4 @@ $("foot").textContent = `Source: BA portfolio tracker, data as of ${fmtDate(DATA
 render();
 </script>
 </body>
-</html> 
+</html>
