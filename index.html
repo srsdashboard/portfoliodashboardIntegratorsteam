@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Integrators Team Portfolio Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F6FA; --card:#FFFFFF; --line:#E1E8F0; --text:#0B2545; --muted:#5B6B82; --soft:#EEF3F9;
+  --navy:#0B2545; --dark:#134074; --mid:#1F6FB2; --light:#8DC6F0; --teal:#0E9AA7; --turq:#3CC6C4;
+  --green:#1E9E61; --red:#D64545;
+  --shadow:0 1px 2px rgba(11,37,69,.05),0 4px 14px rgba(11,37,69,.06);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0A1626; --card:#102238; --line:#1E3550; --text:#E6EEF7; --muted:#9AAEC6; --soft:#16304C;
+    --navy:#7FB2E5; --dark:#5C9BD6; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Manrope,"Segoe UI",system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.45}
+.wrap{max-width:1480px;margin:0 auto;padding:24px 28px 40px}
+button,select{font-family:inherit}
+
+/* Header */
+.head{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--dark),var(--teal));display:grid;place-items:center;flex:none}
+.title h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.01em}
+.title p{margin:2px 0 0;color:var(--muted);font-size:13.5px}
+.updated{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:12.5px;color:var(--muted);box-shadow:var(--shadow)}
+.updated b{color:var(--text);font-weight:700}
+
+/* Filters */
+.filters{margin-top:18px;display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+.f{display:flex;flex-direction:column;gap:4px;min-width:150px;flex:1}
+.f label{font-size:12px;color:var(--muted);font-weight:600}
+.f select{appearance:none;border:1px solid var(--line);background:var(--soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235B6B82' stroke-width='1.6' fill='none'/%3E%3C/svg%3E") no-repeat right 12px center;color:var(--text);border-radius:9px;padding:9px 32px 9px 12px;font-size:13.5px;font-weight:600;cursor:pointer}
+.f select:focus-visible,button:focus-visible,.proj:focus-visible{outline:2px solid var(--mid);outline-offset:2px}
+.f select.on{border-color:var(--mid);background-color:color-mix(in srgb,var(--mid) 10%,var(--card))}
+.reset{border:1px solid var(--line);background:var(--card);color:var(--mid);font-weight:700;border-radius:9px;padding:9px 14px;cursor:pointer;font-size:13px}
+.reset:hover{background:var(--soft)}
+
+.note{margin-top:12px;display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--muted);background:color-mix(in srgb,var(--light) 18%,var(--card));border:1px solid color-mix(in srgb,var(--light) 55%,var(--line));border-radius:10px;padding:9px 12px}
+.note b{color:var(--text)}
+.note button{margin-left:auto;border:0;background:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1}
+
+/* KPIs */
+.kpis{margin-top:18px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.kpi .top{display:flex;align-items:center;justify-content:space-between}
+.kpi .lbl{font-size:13px;font-weight:700;color:var(--muted)}
+.kpi .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--c)}
+.kpi .num{font-size:38px;font-weight:800;letter-spacing:-.02em;margin-top:6px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+.kpi .sub b{color:var(--text)}
+.bar{height:6px;border-radius:4px;background:var(--soft);margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c);border-radius:4px;transition:width .5s ease}
+
+/* Grid rows */
+.row3{margin-top:18px;display:grid;grid-template-columns:1fr 1fr 1.35fr;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);min-width:0}
+.card h2{margin:0;font-size:16px;font-weight:800}
+.ch{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.ch .meta{font-size:12px;color:var(--muted);margin-left:auto}
+.link{border:0;background:none;color:var(--mid);font-weight:700;cursor:pointer;font-size:13px;padding:4px 2px}
+.link:hover{text-decoration:underline}
+
+/* Donut */
+.donut{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.dwrap{position:relative;width:180px;height:180px;flex:none;margin:0 auto}
+.dwrap svg{width:100%;height:100%;display:block}
+.dwrap path{cursor:pointer;transition:opacity .15s}
+.dwrap path.dim{opacity:.35}
+.center{position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}
+.center .big{font-size:32px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.center .sm{font-size:11.5px;color:var(--muted);margin-top:4px;font-weight:600}
+.legend{flex:1;min-width:170px;display:flex;flex-direction:column;gap:6px}
+.lg{display:grid;grid-template-columns:12px 1fr auto auto;align-items:center;gap:10px;padding:7px 8px;border-radius:8px;font-size:13px}
+.lg{cursor:pointer;border:0;background:none;color:inherit;font:inherit;text-align:left;width:100%}
+.lg:hover{background:var(--soft)}
+.lg.sel{background:var(--soft);box-shadow:inset 3px 0 0 var(--sc)}
+.lg:disabled{cursor:default;opacity:.55}
+.slist{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.slh{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:6px}
+.slh .sw{width:10px;height:10px;border-radius:3px}
+.slh .hint{margin-left:auto;font-size:11.5px;color:var(--muted)}
+.srows{max-height:232px;overflow-y:auto}
+.srow{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;padding:8px 6px;border:0;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;border-radius:6px}
+.srow:last-child{border-bottom:0}
+.srow:hover{background:var(--soft)}
+.srow .nm{font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srow .own{font-size:11.5px;color:var(--muted)}
+.srow .dt{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}
+.lg .sw{width:10px;height:10px;border-radius:3px}
+.lg .n{font-weight:800;font-variant-numeric:tabular-nums}
+.lg .p{color:var(--muted);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tip{position:fixed;pointer-events:none;background:var(--card);border:1px solid var(--line);box-shadow:0 8px 24px rgba(11,37,69,.18);border-radius:8px;padding:7px 10px;font-size:12.5px;z-index:50;opacity:0;transition:opacity .1s;white-space:nowrap}
+.tip b{font-weight:800}
+
+/* Key projects */
+.plist{display:flex;flex-direction:column}
+.phead,.proj{display:grid;grid-template-columns:44px minmax(0,1fr) 112px 108px;gap:10px;align-items:center}
+.phead{font-size:11.5px;color:var(--muted);font-weight:700;padding:0 10px 8px;border-bottom:1px solid var(--line)}
+.proj{padding:10px;border-bottom:1px solid var(--line);cursor:pointer;border-radius:8px;background:none;border-left:0;border-right:0;border-top:0;text-align:left;color:inherit;font-size:13px;width:100%}
+.proj:hover{background:var(--soft)}
+.proj .nm{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.proj .own{font-size:11.5px;color:var(--muted);font-weight:500}
+.proj .ph,.proj .dt{color:var(--muted);font-size:12.5px}
+.late{display:block;font-size:11px;font-weight:700;color:var(--red)}
+.soon{display:block;font-size:11px;font-weight:700;color:var(--teal)}
+.ch .meta.warn{color:var(--red);font-weight:700}
+.pri{display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;border-radius:6px;padding:3px 0;width:34px}
+.pri.P1{background:var(--navy);color:#fff}
+.pri.P2{background:color-mix(in srgb,var(--mid) 18%,var(--card));color:var(--mid)}
+.pri.P3{background:var(--soft);color:var(--muted)}
+.pri.done{background:color-mix(in srgb,var(--green) 14%,var(--card));color:var(--green)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+/* Blockers */
+.row4{margin-top:18px}
+.bsum{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.stat{display:flex;align-items:center;gap:12px;background:var(--soft);border-radius:12px;padding:12px 16px;min-width:200px}
+.stat .v{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.stat .k{font-size:12.5px;color:var(--muted);font-weight:600}
+.stat .k small{display:block;font-weight:500;font-size:11.5px}
+.sevkey{margin-left:auto;display:flex;gap:14px;align-items:center;font-size:12px;color:var(--muted)}
+.tblw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+th{text-align:left;font-size:11.5px;color:var(--muted);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.pn{font-weight:700;white-space:nowrap}
+td.ag{white-space:nowrap;font-variant-numeric:tabular-nums}
+.sev{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;white-space:nowrap}
+.sev i{width:4px;height:16px;border-radius:2px;display:inline-block}
+.age{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:700}
+.age.old{background:color-mix(in srgb,var(--red) 12%,var(--card));color:var(--red)}
+.age.na{color:var(--muted);font-weight:500}
+.empty{padding:28px 10px;text-align:center;color:var(--muted);font-size:13px}
+
+/* Modal */
+.ov{position:fixed;inset:0;background:rgba(11,37,69,.42);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+.ov.open{display:flex}
+.modal{background:var(--card);border-radius:16px;max-width:620px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);padding:22px 24px}
+.mh{display:flex;align-items:flex-start;gap:12px}
+.mh h3{margin:0;font-size:19px;font-weight:800}
+.mh .x{margin-left:auto;border:0;background:var(--soft);width:32px;height:32px;border-radius:8px;cursor:pointer;color:var(--muted);font-size:18px;flex:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 16px}
+.chip{font-size:12px;font-weight:700;background:var(--soft);border-radius:20px;padding:4px 10px;color:var(--text)}
+.dl{display:grid;grid-template-columns:150px 1fr;gap:9px 14px;font-size:13px}
+.dl dt{color:var(--muted);font-weight:600}
+.dl dd{margin:0}
+.inf{font-size:10.5px;font-weight:700;color:var(--teal);margin-left:6px}
+.mb{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.mb h4{margin:0 0 8px;font-size:13.5px}
+.mb li{margin-bottom:6px;font-size:13px}
+
+/* Timeline */
+.row5{margin-top:18px}
+.tlkey{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:12px;color:var(--muted);margin-bottom:12px}
+.tlkey span{display:inline-flex;align-items:center;gap:6px}
+.k-dia{width:10px;height:10px;transform:rotate(45deg);border-radius:2px;background:var(--teal)}
+.k-today{width:2px;height:14px;background:var(--navy)}
+.k-late{width:18px;height:6px;border-radius:3px;background:color-mix(in srgb,var(--red) 35%,var(--card))}
+.k-done{width:10px;height:10px;border-radius:50%;background:var(--dark)}
+.tlw{overflow-x:auto}
+.tl{min-width:920px}
+.tr{display:grid;grid-template-columns:240px 200px minmax(0,1fr);align-items:stretch;border-bottom:1px solid var(--line)}
+.tr.body{cursor:pointer}
+.tr.body:hover{background:var(--soft)}
+.tr.thead{font-size:11.5px;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line)}
+.tr.thead>div{padding:8px 10px}
+.tc{padding:9px 10px;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.tc .nm{font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tc .own{font-size:11.5px;color:var(--muted)}
+.stg{display:flex;gap:3px}
+.stg i{flex:1;height:6px;border-radius:3px;background:var(--soft);border:1px solid var(--line)}
+.stg i.sf{background:var(--teal);border-color:var(--teal)}
+.stg i.sc{background:var(--mid);border-color:var(--mid)}
+.stg.paused i.sf,.stg.paused i.sc{background:var(--light);border-color:var(--light)}
+.stg.done i{background:var(--dark);border-color:var(--dark)}
+.stgl{font-size:11.5px;color:var(--muted);margin-top:5px;white-space:nowrap}
+.stgl b{color:var(--text);font-weight:700}
+.tt{position:relative;min-height:46px}
+.tt .g{position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.tt .now{position:absolute;top:0;bottom:0;width:2px;background:var(--navy);z-index:2;transform:translateX(-1px)}
+.tt .tbar{position:absolute;top:50%;height:8px;transform:translateY(-50%);border-radius:4px;background:color-mix(in srgb,var(--mid) 28%,var(--card));z-index:1}
+.tt .tbar.late{background:color-mix(in srgb,var(--red) 30%,var(--card))}
+.tt .dia{position:absolute;top:50%;width:12px;height:12px;transform:translate(-50%,-50%) rotate(45deg);border-radius:2px;z-index:3;box-shadow:0 0 0 2px var(--card)}
+.tt .done{position:absolute;top:50%;width:11px;height:11px;transform:translate(-50%,-50%);border-radius:50%;background:var(--dark);z-index:3;box-shadow:0 0 0 2px var(--card)}
+.tt .lab{position:absolute;top:50%;transform:translateY(-50%);font-size:11.5px;font-weight:700;white-space:nowrap;z-index:3;padding:0 6px}
+.tt .nod{position:absolute;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:var(--muted);background:var(--soft);border:1px dashed var(--line);border-radius:20px;padding:2px 9px;white-space:nowrap;z-index:3}
+.axis{position:relative;height:30px}
+.axis span{position:absolute;bottom:6px;font-size:11.5px;color:var(--muted);transform:translateX(4px);white-space:nowrap}
+.axis .nowl{color:var(--navy);font-weight:800;transform:translateX(-50%);bottom:auto;top:-2px;background:var(--card);padding:0 4px;border-radius:4px}
+.tgrp{font-size:11.5px;font-weight:800;color:var(--muted);padding:10px 10px 6px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--soft) 60%,var(--card))}
+
+footer{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center}
+
+@media (max-width:1200px){.row3{grid-template-columns:1fr 1fr}.row3 .kp{grid-column:1/-1}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.wrap{padding:16px}.row3{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.updated{margin-left:0}.phead,.proj{grid-template-columns:40px minmax(0,1fr) 84px}.phead .c4,.proj .dt{display:none}.sevkey{margin-left:0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <div class="logo" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+    </div>
+    <div class="title">
+      <h1>The Integrators Team Portfolio Dashboard</h1>
+      <p>Executive Overview | All Business Analysts</p>
+    </div>
+    <div class="updated">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      Last updated <b id="lastUpdated">—</b>
+    </div>
+  </header>
+
+  <section class="filters" aria-label="Filters">
+    <div class="f"><label for="fBA">BA</label><select id="fBA" data-key="ba"></select></div>
+    <div class="f"><label for="fVert">Vertical</label><select id="fVert" data-key="vertical"></select></div>
+    <div class="f"><label for="fStat">Status</label><select id="fStat" data-key="status"></select></div>
+    <div class="f"><label for="fConf">Delivery Confidence</label><select id="fConf" data-key="confidence"></select></div>
+    <button class="reset" id="reset" type="button">Reset filters</button>
+  </section>
+
+
+  <section class="kpis" id="kpis" aria-label="Portfolio summary"></section>
+
+  <section class="row3">
+    <div class="card">
+      <div class="ch"><h2>Portfolio by Status</h2><span class="meta" id="statusMeta"></span></div>
+      <div class="donut"><div class="dwrap" id="dStatus"></div><div class="legend" id="lStatus"></div></div>
+      <div class="slist" id="sStatus"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><h2>Delivery Confidence</h2><span class="meta">Open projects, from BA RAG</span></div>
+      <div class="donut"><div class="dwrap" id="dConf"></div><div class="legend" id="lConf"></div></div>
+      <div class="slist" id="sConf"></div>
+    </div>
+    <div class="card kp">
+      <div class="ch"><h2>Key Projects</h2><span class="meta" id="projMeta"></span><button class="link" id="projAll" type="button">View all</button></div>
+      <div class="plist">
+        <div class="phead"><span>Priority</span><span>Project</span><span>Current phase</span><span class="c4">Target date</span></div>
+        <div id="projects"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="row4 card">
+    <div class="ch"><h2>Key Blockers</h2><button class="link" id="blkAll" type="button">View all</button></div>
+    <div class="bsum">
+      <div class="stat"><div class="v" id="bOpen">—</div><div class="k">Open blockers</div></div>
+      <div class="stat"><div class="v" id="bOld">—</div><div class="k">Open more than 7 days<small id="bOldNote"></small></div></div>
+      <div class="sevkey">
+        <span><i class="dot" style="background:var(--navy)"></i>High</span>
+        <span><i class="dot" style="background:var(--mid)"></i>Medium</span>
+        <span><i class="dot" style="background:var(--light)"></i>Low</span>
+      </div>
+    </div>
+    <div class="tblw">
+      <table>
+        <thead><tr><th>Severity</th><th>Project</th><th>Blocker</th><th>Delivery impact</th><th>Aging</th></tr></thead>
+        <tbody id="blockers"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="row5 card">
+    <div class="ch"><h2>Timeline</h2><span class="meta" id="tlMeta"></span><button class="link" id="tlDone" type="button" hidden>Show completed</button></div>
+    <div class="tlkey">
+      <span><i class="k-today"></i>Today</span>
+      <span><i class="k-dia"></i>Target date (color = delivery confidence)</span>
+      <span><i class="k-late"></i>Past target date</span>
+      <span>Stage track: Discovery → Refinement → Development → UAT → Ready to Deploy → Deployed</span>
+    </div>
+    <div class="tlw"><div class="tl" id="timeline"></div></div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+/* =====================================================================
+   DATA — replace these two arrays with live portfolio data.
+   `inferred` lists fields that were mapped, not taken from the tracker.
+   ===================================================================== */
+const DATA_AS_OF = "2026-11-23";
+
+const PROJECTS = [
+  {"project": "Bectran - GMS", "ba": "Armando", "verticals": ["Other"], "priority": "P1", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Development on track; no open risks", "originalDate": "", "targetDate": "2026-12-08", "targetLabel": "", "targetNote": "", "topRisk": "", "nextStep": "Deliver GMS development and integration; start UAT", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "TransformerHub", "ba": "Armando", "verticals": ["SRS", "HLSG"], "priority": "P2", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Development started; onboarding new team members and defining the model with client lead", "originalDate": "", "targetDate": "2026-12-31", "targetLabel": "Dec 2026", "targetNote": "Tracker shows \"Dec-26\"; read as December 2026", "topRisk": "", "nextStep": "Onboard new team members and agree on the model to start work", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "Bectran - EIL (Mingledorff)", "ba": "Armando", "verticals": ["Other"], "priority": "P3", "status": "Active", "phase": "Discovery", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Requirements set-up underway", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Set up requirements and EIL onboarding", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "Aquafinity", "ba": "Armando", "verticals": ["Other"], "priority": "P1", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "At Risk", "rag": "Amber", "driver": "Field mapping incomplete; vendor test data pending", "originalDate": "", "targetDate": "2026-12-11", "targetLabel": "", "targetNote": "", "topRisk": "Field mapping still incomplete on the Agility side; test data pending from vendor", "nextStep": "Build roadmap and timeline; assess endpoint requirement readiness and map blockers", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "Sailpoint", "ba": "Armando", "verticals": ["Other"], "priority": "P2", "status": "Active", "phase": "Discovery", "businessImpact": "", "confidence": "At Risk", "rag": "Amber", "driver": "Slow stakeholder responses on requirements", "originalDate": "", "targetDate": "2026-12-08", "targetLabel": "", "targetNote": "", "topRisk": "Slow responses from stakeholders", "nextStep": "Define requirements and have an action plan ready by Nov 24", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "Esker Phase 2", "ba": "Giaco", "verticals": ["SRS", "HLSG"], "priority": "P2", "status": "Active", "phase": "Discovery", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Discovery and internal refinement ongoing", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Follow up on vendor technical review (11/12); write canonical-structure requirements requested by client lead", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "HLSG - Order Now", "ba": "Giaco", "verticals": ["HLSG"], "priority": "P1", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Development in progress", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "Tracker notes a staging (STG) date of 11/13/2026", "topRisk": "", "nextStep": "Obtain webhook URL and auth details from stakeholders", "lastUpdated": "2026-11-23", "inferred": ["priority", "status"]},
+  {"project": "HLSG - Quote Enhancement", "ba": "Giaco", "verticals": ["HLSG"], "priority": "P3", "status": "Active", "phase": "Refinement", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Awaiting stakeholder requirements form", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Receive requirements form from stakeholders", "lastUpdated": "2026-11-23", "inferred": ["priority", "status"]},
+  {"project": "PMI - New Requirements", "ba": "Giaco", "verticals": ["SRS"], "priority": "P1", "status": "In Progress", "phase": "Ready to Deploy", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Both requirements delivered; awaiting UAT sign-off", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Obtain UAT sign-off (follow-ups sent 10/13, 10/20, 10/29)", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "RH - Quotes", "ba": "Giaco", "verticals": ["SRS"], "priority": "P1", "status": "In Progress", "phase": "UAT", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "In UAT", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Obtain UAT sign-off from stakeholders", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "Agility Kafka", "ba": "Saimon", "verticals": ["HLSG"], "priority": "P2", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Data mapping nearly complete; vendor documentation received", "originalDate": "", "targetDate": "2027-01-27", "targetLabel": "", "targetNote": "Go-live target; tracker says \"Live by Jan 27\", year assumed 2027", "topRisk": "", "nextStep": "Finish data mapping using vendor documentation", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "Agility ShipmentsList & InvoicesList Migration", "ba": "Saimon", "verticals": ["HLSG"], "priority": "P1", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Second round of consumer-requested changes in progress since 11/13", "originalDate": "", "targetDate": "2026-12-08", "targetLabel": "", "targetNote": "", "topRisk": "Consumers asked that the new response format match the current one", "nextStep": "Finish second round of changes on both stored procedures", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "FrederickBlock", "ba": "Saimon", "verticals": ["SRS", "HLSG"], "priority": "P2", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Fix deployed; security re-scan still pending", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Keep following up with the Cyber team to re-scan the correct target", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "Marketing Items", "ba": "Saimon", "verticals": ["HLSG"], "priority": "P3", "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Ongoing daily marketing requests", "originalDate": "", "targetDate": "", "targetLabel": "Ongoing", "targetNote": "Continuous request intake", "topRisk": "", "nextStep": "Continue daily request intake", "lastUpdated": "2026-11-23", "inferred": ["vertical", "priority", "status"]},
+  {"project": "HLSG - CC Tax Code", "ba": "Saimon", "verticals": ["HLSG"], "priority": "P2", "status": "In Progress", "phase": "UAT", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Business asked to deploy in early January, when it is needed", "originalDate": "", "targetDate": "2027-01-10", "targetLabel": "Early Jan 2027", "targetNote": "Business-requested deployment window; exact date not set", "topRisk": "", "nextStep": "Deploy in early January, per business request", "lastUpdated": "2026-11-23", "inferred": ["priority", "status"]}
+];
+
+// agingDays: null when the tracker has no open date.
+const BLOCKERS = [
+  {"id": "B1", "project": "PMI - New Requirements", "description": "UAT sign-off pending; three follow-ups sent with no response", "impact": "Delivered work cannot be released", "severity": "High", "opened": "2026-10-13", "agingDays": 41},
+  {"id": "B2", "project": "Aquafinity", "description": "Agility-side field mapping incomplete and vendor test data still pending", "impact": "Endpoint build and testing at risk for Dec 11 target", "severity": "High", "opened": "", "agingDays": null},
+  {"id": "B3", "project": "HLSG - Order Now", "description": "Webhook URL and auth details still pending from stakeholders", "impact": "Staging date (Nov 13) passed; end-to-end testing blocked", "severity": "High", "opened": "", "agingDays": null},
+  {"id": "B4", "project": "Sailpoint", "description": "Slow stakeholder responses on requirements", "impact": "Action plan due Nov 24 at risk", "severity": "Medium", "opened": "", "agingDays": null},
+  {"id": "B5", "project": "Agility ShipmentsList & InvoicesList Migration", "description": "Second round of consumer-requested changes to both stored procedures, in progress since 11/13", "impact": "Rework puts Dec 8 target at risk", "severity": "Medium", "opened": "", "agingDays": null},
+  {"id": "B6", "project": "FrederickBlock", "description": "Security re-scan on the correct target still not run despite several follow-ups", "impact": "Fix cannot be validated or closed", "severity": "Medium", "opened": "", "agingDays": null},
+  {"id": "B7", "project": "RH - Quotes", "description": "Waiting for UAT sign-off from stakeholders", "impact": "Release on hold", "severity": "Medium", "opened": "", "agingDays": null},
+  {"id": "B8", "project": "HLSG - Quote Enhancement", "description": "Requirements form not yet received from stakeholders", "impact": "Cannot exit refinement", "severity": "Low", "opened": "", "agingDays": null}
+];
+
+/* ===================================================================== */
+const STATUSES = ["Active","In Progress","Paused"];
+const CONFS = ["On Track","At Risk","Critical"];
+const STATUS_COLOR = {"Active":"var(--mid)","In Progress":"var(--teal)","Paused":"var(--light)","Completed":"var(--dark)"};
+const CONF_COLOR = {"On Track":"var(--green)","At Risk":"var(--turq)","Critical":"var(--red)"};
+const SEV_COLOR = {High:"var(--navy)",Medium:"var(--mid)",Low:"var(--light)"};
+const SEV_RANK = {High:0,Medium:1,Low:2};
+const PRI_RANK = {P1:0,P2:1,P3:2};
+const PHASE_RANK = {"Ready to Deploy":0,"UAT":1,"Development":2,"Refinement":3,"Discovery":4};
+const FIELD_LABEL = {vertical:"Vertical",priority:"Priority",status:"Status"};
+
+const FILTERS = {
+  ba:{el:"fBA", all:"All", opts:[...new Set(PROJECTS.map(p=>p.ba))].sort((a,b)=>(a==="Unassigned")-(b==="Unassigned")||a.localeCompare(b))},
+  vertical:{el:"fVert", all:"All", opts:["SRS","HLSG","Other"]},
+  status:{el:"fStat", all:"All", opts:STATUSES},
+  confidence:{el:"fConf", all:"All", opts:CONFS}
+};
+const state = {ba:"",vertical:"",status:"",confidence:"", allProjects:false, allBlockers:false, showCompleted:false, sel:{status:null, conf:null}};
+const vText = p => p.verticals.join(" + ");
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct = (n,t) => t ? Math.round(n/t*100) : 0;
+const fmtDate = s => { if(!s) return ""; const [y,m,d]=s.split("-").map(Number); return new Date(Date.UTC(y,m-1,d)).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"}); };
+
+function filtered(){
+  return PROJECTS.filter(p =>
+    (!state.ba || p.ba===state.ba) &&
+    (!state.vertical || p.verticals.includes(state.vertical)) &&
+    (!state.status || p.status===state.status) &&
+    (!state.confidence || p.confidence===state.confidence));
+}
+
+/* ---------- Filters ---------- */
+for (const [key,f] of Object.entries(FILTERS)){
+  const sel = $(f.el);
+  sel.add(new Option(f.all,""));
+  f.opts.forEach(o => sel.add(new Option(o,o)));
+  sel.addEventListener("change", () => { state[key]=sel.value; sel.classList.toggle("on",!!sel.value); render(); });
+}
+$("reset").addEventListener("click", () => {
+  for (const [key,f] of Object.entries(FILTERS)){ state[key]=""; $(f.el).value=""; $(f.el).classList.remove("on"); }
+  render();
+});
+
+/* ---------- KPIs ---------- */
+const ICONS = {
+  total:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+  "Active":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>',
+  "In Progress":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>',
+  "Paused":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/></svg>',
+  "Completed":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>'
+};
+const STATUS_SUB = {"Active":"In discovery or refinement","In Progress":"In build, UAT or deploy","Paused":"On hold","Completed":"Delivered"};
+function renderKpis(rows){
+  const t = rows.length;
+  const cards = [{key:"total",label:"Total Projects",n:t,c:"var(--navy)",sub:"No prior-month snapshot yet",bar:null}]
+    .concat(STATUSES.map(s => { const n=rows.filter(p=>p.status===s).length; return {key:s,label:s,n,c:STATUS_COLOR[s],sub:`<b>${pct(n,t)}%</b> of portfolio · ${STATUS_SUB[s]}`,bar:pct(n,t)}; }));
+  $("kpis").innerHTML = cards.map(k => `
+    <div class="kpi" style="--c:${k.c}">
+      <div class="top"><span class="lbl">${esc(k.label)}</span><span class="ic">${ICONS[k.key]}</span></div>
+      <div class="num">${k.n}</div>
+      <div class="sub">${k.sub}</div>
+      ${k.bar===null ? `<div class="bar" aria-hidden="true"><i style="width:${t?100:0}%"></i></div>` : `<div class="bar" aria-hidden="true"><i style="width:${k.bar}%"></i></div>`}
+    </div>`).join("");
+}
+
+/* ---------- Donuts ---------- */
+function arc(cx,cy,r0,r1,a0,a1){
+  const p = (r,a) => [cx + r*Math.sin(a), cy - r*Math.cos(a)];
+  const large = a1-a0 > Math.PI ? 1 : 0;
+  const [x0,y0]=p(r1,a0),[x1,y1]=p(r1,a1),[x2,y2]=p(r0,a1),[x3,y3]=p(r0,a0);
+  return `M${x0},${y0}A${r1},${r1} 0 ${large} 1 ${x1},${y1}L${x2},${y2}A${r0},${r0} 0 ${large} 0 ${x3},${y3}Z`;
+}
+function donut(wrapId, legendId, items, total, centerBig, centerSmall, label, listId, selKey){
+  const W=200,c=100,r1=96,r0=66,gap=items.filter(i=>i.n>0).length>1?0.025:0;
+  let a=0, paths="";
+  if(!total){ paths = `<circle cx="${c}" cy="${c}" r="${(r0+r1)/2}" fill="none" stroke="var(--soft)" stroke-width="${r1-r0}"/>`; }
+  items.forEach((it,i) => {
+    if(!it.n) return;
+    const sweep = it.n/total*2*Math.PI;
+    let a0=a+gap/2, a1=a+sweep-gap/2;
+    if(sweep >= 2*Math.PI-1e-6){ // full ring: two halves
+      paths += `<path data-i="${i}" d="${arc(c,c,r0,r1,0,Math.PI)}" fill="${it.color}"/><path data-i="${i}" d="${arc(c,c,r0,r1,Math.PI,2*Math.PI-1e-4)}" fill="${it.color}"/>`;
+    } else paths += `<path data-i="${i}" d="${arc(c,c,r0,r1,a0,a1)}" fill="${it.color}"/>`;
+    a += sweep;
+  });
+  const aria = `${label}: ` + items.map(i=>`${i.name} ${i.n}`).join(", ");
+  $(wrapId).innerHTML = `<svg viewBox="0 0 ${W} ${W}" role="img" aria-label="${esc(aria)}">${paths}</svg>
+    <div class="center"><div><div class="big">${centerBig}</div><div class="sm">${centerSmall}</div></div></div>`;
+  $(legendId).innerHTML = items.map((it,i) => `
+    <button type="button" class="lg" data-i="${i}" style="--sc:${it.color}" ${it.n?"":"disabled"} aria-pressed="false"><span class="sw" style="background:${it.color}"></span><span>${esc(it.name)}</span><span class="n">${it.n}</span><span class="p">${pct(it.n,total)}%</span></button>`).join("");
+  const tip=$("tip"), paths$=$(wrapId).querySelectorAll("path");
+  const hi = i => paths$.forEach(p=>p.classList.toggle("dim", i!==null && p.dataset.i!=i));
+  $(wrapId).querySelectorAll("path").forEach(p => {
+    const it = items[p.dataset.i];
+    p.addEventListener("mousemove", e => { tip.innerHTML=`<b>${esc(it.name)}</b> · ${it.n} project${it.n===1?"":"s"} (${pct(it.n,total)}%)<div style="color:var(--muted);margin-top:2px">Click to list them</div>`; tip.style.left=(e.clientX+14)+"px"; tip.style.top=(e.clientY+14)+"px"; tip.style.opacity=1; hi(p.dataset.i); });
+    p.addEventListener("mouseleave", () => { tip.style.opacity=0; hi(null); });
+  });
+  $(legendId).querySelectorAll(".lg").forEach(l => { l.addEventListener("mouseenter",()=>hi(l.dataset.i)); l.addEventListener("mouseleave",()=>hi(null)); });
+
+  // Selected segment -> list of its projects (local to this card, does not change global filters)
+  const select = i => {
+    const it = items[i]; state.sel[selKey] = it ? it.name : null;
+    $(legendId).querySelectorAll(".lg").forEach(l => { const on = l.dataset.i==i; l.classList.toggle("sel",on); l.setAttribute("aria-pressed",on); });
+    if(!it || !it.n){ $(listId).innerHTML = `<div class="empty" style="padding:14px">No projects match these filters.</div>`; return; }
+    $(listId).innerHTML = `<div class="slh"><span class="sw" style="background:${it.color}"></span><b>${esc(it.name)}</b><span style="color:var(--muted)">${it.n} project${it.n===1?"":"s"}</span><span class="hint">Select a segment to switch</span></div>
+      <div class="srows">${sortProjects(it.list).map(p => `
+        <button type="button" class="srow" data-p="${esc(p.project)}">
+          <span><span class="pri ${p.priority}">${p.priority}</span></span>
+          <span style="min-width:0"><div class="nm">${esc(p.project)}</div><div class="own">${esc(p.ba)} · ${esc(p.phase)}</div></span>
+          <span class="dt">${esc(targetText(p))}${targetFlag(p)}</span>
+        </button>`).join("")}</div>`;
+    $(listId).querySelectorAll(".srow").forEach(b => b.addEventListener("click", () => openProject(b.dataset.p)));
+  };
+  let idx = items.findIndex(it => it.name===state.sel[selKey] && it.n);
+  if(idx<0){ idx = items.reduce((m,it,i)=> it.n>(items[m]?.n??-1) ? i : m, 0); }
+  select(idx);
+  $(wrapId).querySelectorAll("path").forEach(p => p.addEventListener("click", () => select(+p.dataset.i)));
+  $(legendId).querySelectorAll(".lg").forEach(l => l.addEventListener("click", () => select(+l.dataset.i)));
+}
+
+/* ---------- Target dates ---------- */
+const dayDiff = (a,b) => Math.round((Date.parse(a)-Date.parse(b))/86400000);
+const targetText = p => p.targetLabel || (p.targetDate ? fmtDate(p.targetDate) : "TBD");
+const daysPast = p => (p.targetDate && p.status!=="Completed") ? dayDiff(DATA_AS_OF, p.targetDate) : null;
+function targetFlag(p){
+  const d = daysPast(p); if(d===null) return "";
+  if(d>0) return `<span class="late">${d} day${d===1?"":"s"} past target</span>`;
+  if(d===0) return `<span class="soon">Due today</span>`;
+  if(d>=-7) return `<span class="soon">Due in ${-d} day${d===-1?"":"s"}</span>`;
+  return "";
+}
+
+/* ---------- Key projects ---------- */
+function sortProjects(rows){
+  return [...rows].sort((a,b) => PRI_RANK[a.priority]-PRI_RANK[b.priority] || (PHASE_RANK[a.phase]??9)-(PHASE_RANK[b.phase]??9) || a.project.localeCompare(b.project));
+}
+function renderProjects(rows){
+  const open = rows.filter(p=>p.status!=="Completed");
+  const base = open.length ? sortProjects(open) : [...rows].sort((a,b)=>b.targetDate.localeCompare(a.targetDate));
+  const sorted = base, show = state.allProjects ? sorted : sorted.slice(0,6);
+  $("projAll").textContent = state.allProjects ? "Show fewer" : `View all (${base.length})`;
+  $("projAll").hidden = base.length <= 6;
+  const late = rows.filter(p=>daysPast(p)>0).length;
+  $("projMeta").textContent = late ? `${late} past target date` : "";
+  $("projMeta").classList.toggle("warn", late>0);
+  if(!rows.length){ $("projects").innerHTML = `<div class="empty">No projects match these filters.</div>`; return; }
+  $("projects").innerHTML = show.map(p => `
+    <button class="proj" type="button" data-p="${esc(p.project)}">
+      <span>${p.priority ? `<span class="pri ${p.priority}">${p.priority}</span>` : `<span class="pri done" title="Completed">✓</span>`}</span>
+      <span style="min-width:0"><div class="nm">${esc(p.project)}</div><div class="own">${esc(p.ba)} · ${esc(vText(p))}</div></span>
+      <span class="ph"><i class="dot" style="background:${CONF_COLOR[p.confidence]||STATUS_COLOR[p.status]}"></i>${esc(p.phase)}</span>
+      <span class="dt">${esc(targetText(p))}${targetFlag(p)}</span>
+    </button>`).join("");
+  $("projects").querySelectorAll(".proj").forEach(b => b.addEventListener("click", () => openProject(b.dataset.p)));
+}
+
+/* ---------- Blockers ---------- */
+function renderBlockers(rows){
+  const names = new Set(rows.map(p=>p.project));
+  const pri = Object.fromEntries(PROJECTS.map(p=>[p.project,p.priority]));
+  const list = BLOCKERS.filter(b=>names.has(b.project))
+    .sort((a,b) => SEV_RANK[a.severity]-SEV_RANK[b.severity] || (b.agingDays??-1)-(a.agingDays??-1) || PRI_RANK[pri[a.project]]-PRI_RANK[pri[b.project]]);
+  const known = list.filter(b=>b.agingDays!=null).length;
+  $("bOpen").textContent = list.length;
+  $("bOld").textContent = list.filter(b=>b.agingDays>7).length;
+  $("bOldNote").textContent = list.length ? `Aging tracked for ${known} of ${list.length}` : "";
+  const show = state.allBlockers ? list : list.slice(0,5);
+  $("blkAll").textContent = state.allBlockers ? "Show fewer" : `View all (${list.length})`;
+  $("blkAll").hidden = list.length <= 5;
+  $("blockers").innerHTML = list.length ? show.map(b => `
+    <tr>
+      <td><span class="sev"><i style="background:${SEV_COLOR[b.severity]}"></i>${b.severity}</span></td>
+      <td class="pn">${esc(b.project)}</td>
+      <td>${esc(b.description)}</td>
+      <td>${esc(b.impact)}</td>
+      <td class="ag">${b.agingDays==null ? '<span class="age na">Not tracked</span>' : `<span class="age ${b.agingDays>7?"old":""}">${b.agingDays} days</span>`}</td>
+    </tr>`).join("") : `<tr><td colspan="5"><div class="empty">No open blockers for these filters.</div></td></tr>`;
+}
+
+/* ---------- Project detail ---------- */
+function openProject(name){
+  const p = PROJECTS.find(x=>x.project===name); if(!p) return;
+  const inf = f => p.inferred.includes(f) ? '<span class="inf">mapped</span>' : "";
+  const bl = BLOCKERS.filter(b=>b.project===name);
+  const row = (k,v,f) => `<dt>${k}</dt><dd>${v ? esc(v) : '<span style="color:var(--muted)">Not recorded</span>'}${f?inf(f):""}</dd>`;
+  $("modal").innerHTML = `
+    <div class="mh"><div><h3 id="mTitle">${esc(p.project)}</h3><div style="color:var(--muted);font-size:13px;margin-top:2px">Owned by ${esc(p.ba)}</div></div><button class="x" id="mx" type="button" aria-label="Close">×</button></div>
+    <div class="chips">
+      ${p.priority ? `<span class="chip"><span class="pri ${p.priority}" style="width:auto;padding:0 6px;margin-right:4px">${p.priority}</span>Priority${inf("priority")}</span>` : ""}
+      <span class="chip"><i class="dot" style="background:${STATUS_COLOR[p.status]}"></i>${esc(p.status)}${inf("status")}</span>
+      ${p.confidence ? `<span class="chip"><i class="dot" style="background:${CONF_COLOR[p.confidence]}"></i>${esc(p.confidence)} (RAG ${esc(p.rag)})</span>` : ""}
+      <span class="chip">${esc(vText(p))}${inf("vertical")}</span>
+    </div>
+    <dl class="dl">
+      ${row("Current phase",p.phase)}
+      ${row("Confidence driver",p.driver)}
+      ${row("Top risk",p.topRisk)}
+      ${row("Next step",p.nextStep)}
+      ${row("Business impact",p.businessImpact)}
+      ${row("Original delivery",fmtDate(p.originalDate))}
+      <dt>${p.status==="Completed"?"Delivered":"Target date"}</dt><dd>${esc(targetText(p))}${targetFlag(p)}${p.targetNote?`<div style="color:var(--muted);font-size:12px">${esc(p.targetNote)}</div>`:""}</dd>
+      ${row("Last updated",fmtDate(p.lastUpdated))}
+    </dl>
+    ${bl.length ? `<div class="mb"><h4>Open blockers (${bl.length})</h4><ul>${bl.map(b=>`<li><b>${b.severity}:</b> ${esc(b.description)} — ${esc(b.impact)}</li>`).join("")}</ul></div>` : ""}`;
+  $("ov").classList.add("open");
+  $("mx").addEventListener("click", closeModal);
+  $("mx").focus();
+}
+function closeModal(){ $("ov").classList.remove("open"); }
+$("ov").addEventListener("click", e => { if(e.target===$("ov")) closeModal(); });
+document.addEventListener("keydown", e => { if(e.key==="Escape") closeModal(); });
+
+$("projAll").addEventListener("click", () => { state.allProjects=!state.allProjects; renderProjects(filtered()); });
+$("blkAll").addEventListener("click", () => { state.allBlockers=!state.allBlockers; renderBlockers(filtered()); });
+
+
+/* ---------- Timeline ---------- */
+const STAGES = ["Discovery","Refinement","Development","UAT","Ready to Deploy","Deployed"];
+const DAY = 86400000, ts = d => Date.parse(d+"T00:00:00Z");
+function renderTimeline(rows){
+  const incDone = state.showCompleted || state.status==="Completed";
+  const done = rows.filter(p=>p.status==="Completed");
+  const open = rows.filter(p=>p.status!=="Completed");
+  $("tlDone").textContent = incDone && state.status!=="Completed" ? "Hide completed" : `Show completed (${done.length})`;
+  $("tlDone").hidden = !done.length || state.status==="Completed";
+  const dated = open.filter(p=>p.targetDate).sort((a,b)=>a.targetDate.localeCompare(b.targetDate) || PRI_RANK[a.priority]-PRI_RANK[b.priority]);
+  const undated = sortProjects(open.filter(p=>!p.targetDate));
+  const doneRows = incDone ? [...done].sort((a,b)=>b.targetDate.localeCompare(a.targetDate)) : [];
+  const late = dated.filter(p=>daysPast(p)>0).length;
+  $("tlMeta").textContent = `${dated.length} dated · ${undated.length} without target${late?` · ${late} past target`:""}`;
+  if(!dated.length && !undated.length && !doneRows.length){ $("timeline").innerHTML = `<div class="empty">No projects match these filters.</div>`; return; }
+
+  // Domain: month before today (or earliest date shown) to the month after the latest date.
+  const now = ts(DATA_AS_OF);
+  const dates = [...dated, ...doneRows].map(p=>ts(p.targetDate));
+  let lo = Math.min(now - 21*DAY, ...dates), hi = Math.max(now + 30*DAY, ...dates);
+  const d0 = new Date(lo), d1 = new Date(hi);
+  lo = Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth(), 1);
+  hi = Date.UTC(d1.getUTCFullYear(), d1.getUTCMonth()+1, 1) + 6*DAY;
+  const X = t => ((t-lo)/(hi-lo)*100).toFixed(2)+"%";
+  const months = [];
+  for (let m = new Date(lo); m.getTime() < hi; m = new Date(Date.UTC(m.getUTCFullYear(), m.getUTCMonth()+1, 1))) months.push(m.getTime());
+  const grid = months.map(m=>`<i class="g" style="left:${X(m)}"></i>`).join("") + `<i class="now" style="left:${X(now)}"></i>`;
+  const short = t => new Date(t).toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"});
+
+  const stageCell = p => {
+    const idx = Math.max(0, STAGES.indexOf(p.phase));
+    const cls = p.status==="Completed" ? "done" : p.status==="Paused" ? "paused" : "";
+    const segs = STAGES.map((_,i)=>`<i class="${i<idx?"sf":i===idx?"sc":""}"></i>`).join("");
+    return `<div class="stg ${cls}" aria-hidden="true">${segs}</div><div class="stgl"><b>${esc(p.phase)}</b>${p.status==="Paused"?" · Paused":""} · ${idx+1} of ${STAGES.length}</div>`;
+  };
+  const timeCell = p => {
+    if(p.status==="Completed"){
+      const t = ts(p.targetDate);
+      return `${grid}<i class="done" style="left:${X(t)}" title="Delivered ${short(t)}"></i><span class="lab" style="left:${X(t)};color:var(--muted)">Delivered ${short(t)}</span>`;
+    }
+    if(!p.targetDate) return `${grid}<span class="nod" style="left:calc(${X(now)} + 8px)">${esc(targetText(p))}</span>`;
+    const t = ts(p.targetDate), lateBy = daysPast(p), color = CONF_COLOR[p.confidence] || "var(--teal)";
+    const [a,b] = t < now ? [t,now] : [now,t];
+    const label = esc(p.targetLabel || short(t)) + (lateBy>0 ? ` · ${lateBy}d past` : "");
+    const labPos = t < now ? `right:calc(100% - ${X(t)} + 10px)` : `left:calc(${X(t)} + 10px)`;
+    return `${grid}<i class="tbar ${lateBy>0?"late":""}" style="left:${X(a)};width:calc(${X(b)} - ${X(a)})"></i>
+      <i class="dia" style="left:${X(t)};background:${color}" title="Target ${esc(targetText(p))}"></i>
+      <span class="lab" style="${labPos};color:${lateBy>0?"var(--red)":"var(--text)"}">${label}</span>`;
+  };
+  const row = p => `<div class="tr body" data-p="${esc(p.project)}" tabindex="0" role="button" aria-label="${esc(p.project)}, ${esc(p.phase)}, target ${esc(targetText(p))}">
+      <div class="tc"><div class="nm">${p.priority?`<span class="pri ${p.priority}" style="margin-right:6px">${p.priority}</span>`:""}${esc(p.project)}</div><div class="own">${esc(p.ba)} · ${esc(vText(p))}</div></div>
+      <div class="tc">${stageCell(p)}</div>
+      <div class="tt">${timeCell(p)}</div></div>`;
+  const axis = months.filter(m=>(m-lo)/(hi-lo) < 0.93).map(m=>`<span style="left:${X(m)}">${new Date(m).toLocaleDateString("en-US",{month:"short",year:"numeric",timeZone:"UTC"})}</span>`).join("")
+    + `<span class="nowl" style="left:${X(now)}">Today · ${short(now)}</span>`;
+  const group = (title, list) => list.length ? `<div class="tgrp">${title} (${list.length})</div>` + list.map(row).join("") : "";
+  $("timeline").innerHTML =
+    `<div class="tr thead"><div>Project</div><div>Stage</div><div class="axis">${axis}</div></div>`
+    + group("With target date", dated) + group("No target date", undated) + group("Completed", doneRows);
+  $("timeline").querySelectorAll(".tr.body").forEach(r => {
+    r.addEventListener("click", () => openProject(r.dataset.p));
+    r.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openProject(r.dataset.p); } });
+  });
+}
+$("tlDone").addEventListener("click", () => { state.showCompleted=!state.showCompleted; renderTimeline(filtered()); });
+
+/* ---------- Render ---------- */
+function render(){
+  const rows = filtered(), t = rows.length;
+  renderKpis(rows);
+  donut("dStatus","lStatus", STATUSES.map(s=>{const l=rows.filter(p=>p.status===s); return {name:s,n:l.length,list:l,color:STATUS_COLOR[s]};}), t, t, t===1?"project":"projects", "Projects by status", "sStatus", "status");
+  const open = rows.filter(p=>p.status!=="Completed"), to = open.length;
+  const onTrack = open.filter(p=>p.confidence==="On Track").length;
+  donut("dConf","lConf", CONFS.map(s=>{const l=open.filter(p=>p.confidence===s); return {name:s,n:l.length,list:l,color:CONF_COLOR[s]};}), to, to?pct(onTrack,to)+"%":"—", "On Track", "Delivery confidence", "sConf", "conf");
+  renderTimeline(rows);
+  $("statusMeta").textContent = t===PROJECTS.length ? "Full portfolio" : `${t} of ${PROJECTS.length} projects`;
+  renderProjects(rows);
+  renderBlockers(rows);
+  const latest = rows.map(p=>p.lastUpdated).filter(Boolean).sort().pop() || DATA_AS_OF;
+  $("lastUpdated").textContent = fmtDate(latest);
+}
+$("foot").textContent = `Source: BA portfolio tracker, data as of ${fmtDate(DATA_AS_OF)}. AI-assisted build; mapped fields require BA validation.`;
+render();
+</script>
+</body>
+</html> 
