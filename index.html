@@ -201,6 +201,11 @@ td.ag{white-space:nowrap;font-variant-numeric:tabular-nums}
 .axis{position:relative;height:30px}
 .axis span{position:absolute;bottom:6px;font-size:11.5px;color:var(--muted);transform:translateX(4px);white-space:nowrap}
 .axis .nowl{color:var(--navy);font-weight:800;transform:translateX(-50%);bottom:auto;top:-2px;background:var(--card);padding:0 4px;border-radius:4px}
+.tgrp.tog{display:flex;align-items:center;gap:8px;width:100%;border:0;border-bottom:1px solid var(--line);cursor:pointer;font-family:inherit;text-align:left}
+.tgrp.tog:hover{color:var(--text)}
+.tgrp.tog .chev{display:inline-block;transition:transform .15s;font-size:10px}
+.tgrp.tog[aria-expanded="true"] .chev{transform:rotate(90deg)}
+.tgrp.tog .hint{margin-left:auto;font-weight:600}
 .tgrp{font-size:11.5px;font-weight:800;color:var(--muted);padding:10px 10px 6px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--soft) 60%,var(--card))}
 
 footer{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center}
@@ -350,7 +355,7 @@ const FILTERS = {
   status:{el:"fStat", all:"All", opts:STATUSES},
   confidence:{el:"fConf", all:"All", opts:CONFS}
 };
-const state = {ba:"",vertical:"",status:"",confidence:"", allProjects:false, allBlockers:false, showCompleted:false, sel:{status:null, conf:null}};
+const state = {ba:"",vertical:"",status:"",confidence:"", allProjects:false, allBlockers:false, showCompleted:false, showUndated:false, sel:{status:null, conf:null}};
 const vText = p => p.verticals.join(" + ");
 
 const $ = id => document.getElementById(id);
@@ -604,15 +609,19 @@ function renderTimeline(rows){
   const axis = months.filter(m=>(m-lo)/(hi-lo) < 0.93).map(m=>`<span style="left:${X(m)}">${new Date(m).toLocaleDateString("en-US",{month:"short",year:"numeric",timeZone:"UTC"})}</span>`).join("")
     + `<span class="nowl" style="left:${X(now)}">Today · ${short(now)}</span>`;
   const group = (title, list) => list.length ? `<div class="tgrp">${title} (${list.length})</div>` + list.map(row).join("") : "";
+  const undatedGroup = list => !list.length ? "" :
+    `<button type="button" class="tgrp tog" id="tlUndated" aria-expanded="${state.showUndated}"><span class="chev">▶</span>No target date (${list.length})<span class="hint">${state.showUndated?"Hide":"Show"}</span></button>`
+    + (state.showUndated ? list.map(row).join("") : "");
   $("timeline").innerHTML =
     `<div class="tr thead"><div>Project</div><div>Stage</div><div class="axis">${axis}</div></div>`
-    + group("With target date", dated) + group("No target date", undated) + group("Completed", doneRows);
+    + group("With target date", dated) + undatedGroup(undated) + group("Completed", doneRows);
   $("timeline").querySelectorAll(".tr.body").forEach(r => {
     r.addEventListener("click", () => openProject(r.dataset.p));
     r.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openProject(r.dataset.p); } });
   });
 }
 $("tlDone").addEventListener("click", () => { state.showCompleted=!state.showCompleted; renderTimeline(filtered()); });
+$("timeline").addEventListener("click", e => { if(e.target.closest("#tlUndated")){ state.showUndated=!state.showUndated; renderTimeline(filtered()); } });
 
 /* ---------- Render ---------- */
 function render(){
