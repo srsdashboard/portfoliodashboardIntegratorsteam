@@ -291,7 +291,6 @@ footer{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center}
     <div class="tlw"><div class="tl" id="timeline"></div></div>
   </section>
 
-  <footer id="foot"></footer>
 </div>
 
 <div class="tip" id="tip"></div>
@@ -658,7 +657,6 @@ function render(){
   renderBlockers(rows);
   $("lastUpdated").textContent = fmtDate(TODAY);
 }
-$("foot").textContent = `Source: BA portfolio tracker. AI-assisted build; mapped fields require BA validation.`;
 render();
 </script>
 </body>
