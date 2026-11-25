@@ -165,8 +165,17 @@ td.ag{white-space:nowrap;font-variant-numeric:tabular-nums}
 
 /* Timeline */
 .row5{margin-top:18px}
+.row6{margin-top:18px}
+.upgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.upc{display:flex;flex-direction:column;gap:6px;text-align:left;border:1px solid var(--line);border-left:4px solid var(--light);background:var(--card);color:inherit;font:inherit;border-radius:10px;padding:12px 14px;cursor:pointer}
+.upc:hover{background:var(--soft)}
+.upc .nm{font-weight:700;font-size:13.5px}
+.upc .own{font-size:12px;color:var(--muted)}
+.upc .tags{display:flex;flex-wrap:wrap;gap:6px}
+.upc .tag{font-size:11px;font-weight:700;border-radius:20px;padding:2px 8px;background:var(--soft);color:var(--muted)}
 .tlkey{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:12px;color:var(--muted);margin-bottom:12px}
 .tlkey span{display:inline-flex;align-items:center;gap:6px}
+.k-open{width:18px;height:6px;border-radius:3px;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--mid) 45%,var(--card)) 0 5px,transparent 5px 8px)}
 .k-dia{width:10px;height:10px;transform:rotate(45deg);border-radius:2px;background:var(--teal)}
 .k-today{width:2px;height:14px;background:var(--navy)}
 .k-late{width:18px;height:6px;border-radius:3px;background:color-mix(in srgb,var(--red) 35%,var(--card))}
@@ -198,6 +207,8 @@ td.ag{white-space:nowrap;font-variant-numeric:tabular-nums}
 .tt .done{position:absolute;top:50%;width:11px;height:11px;transform:translate(-50%,-50%);border-radius:50%;background:var(--dark);z-index:3;box-shadow:0 0 0 2px var(--card)}
 .tt .lab{position:absolute;top:50%;transform:translateY(-50%);font-size:11.5px;font-weight:700;white-space:nowrap;z-index:3;padding:0 6px}
 .tt .nod{position:absolute;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:var(--muted);background:var(--soft);border:1px dashed var(--line);border-radius:20px;padding:2px 9px;white-space:nowrap;z-index:3}
+.tt .tbar.open{background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--mid) 45%,var(--card)) 0 7px,transparent 7px 11px)}
+.tt .nod.dev{border-style:solid;background:color-mix(in srgb,var(--mid) 12%,var(--card));color:var(--mid)}
 .axis{position:relative;height:30px}
 .axis span{position:absolute;bottom:6px;font-size:11.5px;color:var(--muted);transform:translateX(4px);white-space:nowrap}
 .axis .nowl{color:var(--navy);font-weight:800;transform:translateX(-50%);bottom:auto;top:-2px;background:var(--card);padding:0 4px;border-radius:4px}
@@ -280,12 +291,18 @@ footer{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center}
     </div>
   </section>
 
+  <section class="row6 card">
+    <div class="ch"><h2>Upcoming Projects</h2><span class="meta" id="upMeta"></span></div>
+    <div id="upcoming" class="upgrid"></div>
+  </section>
+
   <section class="row5 card">
     <div class="ch"><h2>Timeline</h2><span class="meta" id="tlMeta"></span><button class="link" id="tlDone" type="button" hidden>Show completed</button></div>
     <div class="tlkey">
       <span><i class="k-today"></i>Today</span>
       <span><i class="k-dia"></i>Target date (color = delivery confidence)</span>
       <span><i class="k-late"></i>Past target date</span>
+      <span><i class="k-open"></i>In development, no target date</span>
       <span>Stage track: Discovery → Refinement → Development → UAT → Ready to Deploy → Deployed</span>
     </div>
     <div class="tlw"><div class="tl" id="timeline"></div></div>
@@ -324,11 +341,12 @@ const PROJECTS = [
   {"project": "FrederickBlock", "ba": "Saimon", "dev": "Chandra", "verticals": ["HLSG"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Fix deployed; security re-scan still pending", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Keep following up with the Cyber team to re-scan the correct target", "lastUpdated": "2026-11-24", "inferred": [], "statusNote": "", "milestone": "Development"},
   {"project": "Marketing Items", "ba": "Saimon", "dev": "Mohan, JJ", "verticals": ["Other"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Ongoing daily marketing requests", "originalDate": "", "targetDate": "", "targetLabel": "Ongoing", "targetNote": "Continuous request intake", "topRisk": "", "nextStep": "Continue daily request intake", "lastUpdated": "2026-11-24", "inferred": ["vertical"], "statusNote": "", "milestone": "Development"},
   {"project": "HLSG - CC Tax Code", "ba": "Saimon", "dev": "Ricardo", "verticals": ["HLSG"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "On Track", "rag": "Green", "driver": "Business asked to deploy in early January, when it is needed", "originalDate": "", "targetDate": "2027-01-10", "targetLabel": "Early Jan 2027", "targetNote": "Business-requested deployment window; exact date not set", "topRisk": "", "nextStep": "Deploy in early January, per business request", "lastUpdated": "2026-11-24", "inferred": [], "statusNote": "Status marked with * in tracker (tentative)", "milestone": "UAT"},
-  {"project": "Ship-To and Eligible Branches - Initial Data Dump and Delta API", "ba": "TBD", "dev": "TBD", "verticals": ["SRS"], "status": "TBD", "phase": "TBD", "businessImpact": "", "confidence": "Not rated", "rag": "TBD", "driver": "No RAG or update in tracker yet", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Not defined in tracker", "lastUpdated": "2026-11-24", "inferred": [], "milestone": "TBD", "statusNote": ""},
-  {"project": "ProLeads", "ba": "TBD", "dev": "Aravind", "verticals": ["SRS"], "status": "TBD", "phase": "TBD", "businessImpact": "", "confidence": "Not rated", "rag": "TBD", "driver": "No RAG or update in tracker yet", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Not defined in tracker", "lastUpdated": "2026-11-24", "inferred": [], "milestone": "TBD", "statusNote": ""},
+  {"project": "Ship-To and Eligible Branches - Initial Data Dump and Delta API", "ba": "TBD", "dev": "TBD", "verticals": ["SRS"], "status": "Upcoming", "phase": "TBD", "businessImpact": "", "confidence": "Not rated", "rag": "TBD", "driver": "No RAG or update in tracker yet", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Not defined in tracker", "lastUpdated": "2026-11-24", "inferred": [], "milestone": "TBD", "statusNote": ""},
+  {"project": "ProLeads", "ba": "Giaco", "dev": "Aravind", "verticals": ["SRS"], "status": "Upcoming", "phase": "TBD", "businessImpact": "", "confidence": "Not rated", "rag": "TBD", "driver": "No RAG or update in tracker yet", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Not defined in tracker", "lastUpdated": "2026-11-24", "inferred": [], "milestone": "TBD", "statusNote": ""},
   {"project": "GitHub Repo / Migration", "ba": "TBD", "dev": "Multiple devs", "verticals": ["SRS", "HLSG"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "Not rated", "rag": "TBD", "driver": "No RAG or update in tracker yet", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Not defined in tracker", "lastUpdated": "2026-11-24", "inferred": [], "milestone": "Development", "statusNote": ""},
   {"project": "HLSG - QuickBooks", "ba": "TBD", "dev": "TBD", "verticals": ["HLSG"], "status": "UAT", "phase": "UAT", "businessImpact": "", "confidence": "Not rated", "rag": "TBD", "driver": "No RAG or update in tracker yet", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Not defined in tracker", "lastUpdated": "2026-11-24", "inferred": [], "milestone": "UAT", "statusNote": ""},
-  {"project": "ProCard", "ba": "TBD", "dev": "Santosh, Aravind", "verticals": ["SRS"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "Not rated", "rag": "TBD", "driver": "No RAG or update in tracker yet", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Not defined in tracker", "lastUpdated": "2026-11-24", "inferred": [], "milestone": "Development", "statusNote": ""}
+  {"project": "ProCard", "ba": "TBD", "dev": "Santosh, Aravind", "verticals": ["SRS"], "status": "In Progress", "phase": "Development", "businessImpact": "", "confidence": "Not rated", "rag": "TBD", "driver": "No RAG or update in tracker yet", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Not defined in tracker", "lastUpdated": "2026-11-24", "inferred": [], "milestone": "Development", "statusNote": ""},
+  {"project": "API - AI - Integration", "ba": "Armando", "dev": "David", "verticals": ["Other"], "status": "Upcoming", "phase": "TBD", "businessImpact": "", "confidence": "Not rated", "rag": "TBD", "driver": "Upcoming; not yet started", "originalDate": "", "targetDate": "", "targetLabel": "TBD", "targetNote": "", "topRisk": "", "nextStep": "Not defined in tracker", "lastUpdated": "2026-11-24", "inferred": ["vertical"], "milestone": "Upcoming", "statusNote": ""}
 ];
 
 // agingDays: null when the tracker has no open date.
@@ -344,10 +362,10 @@ const BLOCKERS = [
 ];
 
 /* ===================================================================== */
-const STATUSES = ["Discovery","In Progress","UAT","Ready to Deploy","TBD"];
+const STATUSES = ["Discovery","In Progress","UAT","Ready to Deploy","Upcoming"];
 const KPI_STATUSES = STATUSES;
 const CONFS = ["On Track","At Risk","Critical"];
-const STATUS_COLOR = {"Discovery":"var(--light)","In Progress":"var(--mid)","UAT":"var(--teal)","Ready to Deploy":"var(--dark)","TBD":"#9AA8BA","Paused":"var(--light)","Completed":"var(--dark)"};
+const STATUS_COLOR = {"Discovery":"var(--light)","In Progress":"var(--mid)","UAT":"var(--teal)","Ready to Deploy":"var(--dark)","Upcoming":"#9AA8BA","Paused":"var(--light)","Completed":"var(--dark)"};
 const CONF_COLOR = {"On Track":"var(--green)","At Risk":"var(--turq)","Critical":"var(--red)","Not rated":"#9AA8BA"};
 const SEV_COLOR = {High:"var(--navy)",Medium:"var(--mid)",Low:"var(--light)"};
 const SEV_RANK = {High:0,Medium:1,Low:2};
@@ -396,11 +414,11 @@ const ICONS = {
   "In Progress":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>',
   "UAT":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 12l2 2 4-4"/></svg>',
   "Ready to Deploy":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>',
-  "TBD":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.4M12 17h.01"/></svg>',
+  "Upcoming":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.4M12 17h.01"/></svg>',
   "Paused":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/></svg>',
   "Completed":'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>'
 };
-const STATUS_SUB = {"Discovery":"Scoping and requirements","In Progress":"In development","UAT":"User acceptance testing","Ready to Deploy":"Awaiting release","TBD":"Status not yet defined","Paused":"On hold","Completed":"Delivered"};
+const STATUS_SUB = {"Discovery":"Scoping and requirements","In Progress":"In development","UAT":"User acceptance testing","Ready to Deploy":"Awaiting release","Upcoming":"Not yet started","Paused":"On hold","Completed":"Delivered"};
 function renderKpis(rows){
   const t = rows.length;
   const cards = [{key:"total",label:"Total Projects",n:t,c:"var(--navy)",sub:"",bar:null}]
@@ -580,16 +598,21 @@ function renderTimeline(rows){
   const open = rows.filter(p=>p.status!=="Completed");
   $("tlDone").textContent = incDone && state.status!=="Completed" ? "Hide completed" : `Show completed (${done.length})`;
   $("tlDone").hidden = !done.length || state.status==="Completed";
-  const dated = open.filter(p=>p.targetDate).sort((a,b)=>prank(a)-prank(b) || a.targetDate.localeCompare(b.targetDate) || (PHASE_RANK[a.phase]??9)-(PHASE_RANK[b.phase]??9));
-  const undated = sortProjects(open.filter(p=>!p.targetDate));
+  // Main timeline: every project with a target date + every Development project (dated or not).
+  // Collapsed group: other stages without a target date. Status TBD lives in Upcoming Projects, not here.
+  const inFlight = open.filter(p=>p.status!=="Upcoming");
+  const isDev = p => p.phase==="Development";
+  const dated = inFlight.filter(p=>p.targetDate || isDev(p)).sort((a,b)=>prank(a)-prank(b) || (!a.targetDate)-(!b.targetDate) || (a.targetDate||"").localeCompare(b.targetDate||"") || a.project.localeCompare(b.project));
+  const undated = sortProjects(inFlight.filter(p=>!p.targetDate && !isDev(p)));
+  const upcoming = open.length - inFlight.length;
   const doneRows = incDone ? [...done].sort((a,b)=>b.targetDate.localeCompare(a.targetDate)) : [];
   const late = dated.filter(p=>daysPast(p)>0).length;
-  $("tlMeta").textContent = `${dated.length} dated · ${undated.length} without target${late?` · ${late} past target`:""}`;
+  $("tlMeta").textContent = `${dated.length} on timeline · ${undated.length} without target${upcoming?` · ${upcoming} upcoming`:""}${late?` · ${late} past target`:""}`;
   if(!dated.length && !undated.length && !doneRows.length){ $("timeline").innerHTML = `<div class="empty">No projects match these filters.</div>`; return; }
 
   // Domain: month before today (or earliest date shown) to the month after the latest date.
   const now = ts(TODAY);
-  const dates = [...dated, ...doneRows].map(p=>ts(p.targetDate));
+  const dates = [...dated, ...doneRows].filter(p=>p.targetDate).map(p=>ts(p.targetDate));
   let lo = Math.min(now - 21*DAY, ...dates), hi = Math.max(now + 30*DAY, ...dates);
   const d0 = new Date(lo), d1 = new Date(hi);
   lo = Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth(), 1);
@@ -611,6 +634,7 @@ function renderTimeline(rows){
       const t = ts(p.targetDate);
       return `${grid}<i class="done" style="left:${X(t)}" title="Delivered ${short(t)}"></i><span class="lab" style="left:${X(t)};color:var(--muted)">Delivered ${short(t)}</span>`;
     }
+    if(!p.targetDate && isDev(p)) return `${grid}<i class="tbar open" style="left:${X(now)};width:calc(${X(now+21*DAY)} - ${X(now)})"></i><span class="nod dev" style="left:calc(${X(now+21*DAY)} + 6px)">In development · ${p.targetLabel==="Ongoing"?"Ongoing":"target TBD"}</span>`;
     if(!p.targetDate) return `${grid}<span class="nod" style="left:calc(${X(now)} + 8px)">${esc(targetText(p))}</span>`;
     const t = ts(p.targetDate), lateBy = daysPast(p), color = CONF_COLOR[p.confidence] || "var(--teal)";
     const [a,b] = t < now ? [t,now] : [now,t];
@@ -632,7 +656,7 @@ function renderTimeline(rows){
     + (state.showUndated ? list.map(row).join("") : "");
   $("timeline").innerHTML =
     `<div class="tr thead"><div>Project</div><div>Stage</div><div class="axis">${axis}</div></div>`
-    + group("With target date", dated) + undatedGroup(undated) + group("Completed", doneRows);
+    + group("Active timeline", dated) + undatedGroup(undated) + group("Completed", doneRows);
   $("timeline").querySelectorAll(".tr.body").forEach(r => {
     r.addEventListener("click", () => openProject(r.dataset.p));
     r.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openProject(r.dataset.p); } });
@@ -640,6 +664,19 @@ function renderTimeline(rows){
 }
 $("tlDone").addEventListener("click", () => { state.showCompleted=!state.showCompleted; renderTimeline(filtered()); });
 $("timeline").addEventListener("click", e => { if(e.target.closest("#tlUndated")){ state.showUndated=!state.showUndated; renderTimeline(filtered()); } });
+
+/* ---------- Upcoming projects (status TBD: not yet started) ---------- */
+function renderUpcoming(rows){
+  const list = sortProjects(rows.filter(p=>p.status==="Upcoming"));
+  $("upMeta").textContent = list.length ? `${list.length} not yet started` : "";
+  $("upcoming").innerHTML = list.length ? list.map(p => `
+    <button type="button" class="upc" data-p="${esc(p.project)}">
+      <span class="nm">${esc(p.project)}</span>
+      <span class="own">${team(p)}</span>
+      <span class="tags"><span class="tag">${esc(vText(p))}</span><span class="tag">Target ${esc(targetText(p))}</span>${p.confidence==="Not rated"?'<span class="tag">No RAG yet</span>':""}</span>
+    </button>`).join("") : `<div class="empty">No upcoming projects for these filters.</div>`;
+  $("upcoming").querySelectorAll(".upc").forEach(b => b.addEventListener("click", () => openProject(b.dataset.p)));
+}
 
 /* ---------- Render ---------- */
 function render(){
@@ -651,6 +688,7 @@ function render(){
   $("confMeta").textContent = unrated ? `${to} rated · ${unrated} without RAG` : "From BA RAG";
   const onTrack = open.filter(p=>p.confidence==="On Track").length;
   donut("dConf","lConf", CONFS.map(s=>{const l=open.filter(p=>p.confidence===s); return {name:s,n:l.length,list:l,color:CONF_COLOR[s]};}), to, to?pct(onTrack,to)+"%":"—", "On Track", "Delivery confidence", "sConf", "conf");
+  renderUpcoming(rows);
   renderTimeline(rows);
   $("statusMeta").textContent = t===PROJECTS.length ? "Full portfolio" : `${t} of ${PROJECTS.length} projects`;
   renderProjects(rows);
